@@ -83,7 +83,7 @@ class AuthController {
     const { currentUser } = req;
     const { token: accessToken } = jwt.generateAccessToken(String(currentUser._id));
     const fronendUrl = env.get('url.frontend')
-    const successRedirect = `${fronendUrl}/authentication`
+    const successRedirect = `${fronendUrl}authentication`
     res.redirect(`${successRedirect}?accessToken=${accessToken}`)
   }
 

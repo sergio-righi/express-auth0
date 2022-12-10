@@ -44,7 +44,7 @@ class AuthService {
   }
 
   _getAuthCallbackUrl(providerName: string) {
-    return `${env.get('url.backend')}/auth/${providerName}/callback`;
+    return `${env.get('url.backend')}auth/${providerName}/callback`;
   }
 
   async find(query: any) {

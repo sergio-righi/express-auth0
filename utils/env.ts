@@ -30,11 +30,11 @@ export default convict({
   },
   url: {
     frontend: {
-      default: 'http://localhost:3000',
+      default: 'http://localhost:3000/',
       env: 'FRONTEND_URL',
     },
     backend: {
-      default: 'http://localhost:4000',
+      default: 'http://localhost:4000/',
       env: 'BACKEND_URL',
     },
   },
