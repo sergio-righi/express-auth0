@@ -1,10 +1,7 @@
 import { Schema } from 'mongoose'
-import { NextFunction } from 'express'
+import { crypto } from 'utils'
 
-import { UserType } from '../interfaces'
-import { crypto } from '../utils'
-
-class UserSchema {
+export class UserSchema {
   userSchema: Schema
 
   constructor() {
@@ -42,4 +39,4 @@ class UserSchema {
   }
 }
 
-export default new UserSchema().userSchema;
+export const UserSchemaInstance = new UserSchema().userSchema;

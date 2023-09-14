@@ -1,14 +1,14 @@
 import { decode, sign, verify } from 'jsonwebtoken';
 
-import { JWTType } from '../interfaces';
-import { crypto, enums, env } from '../utils';
+import { JWTType } from 'interfaces';
+import { crypto, enums, env } from 'utils';
 
-const generateToken = (userId: string, type: enums.TokenType) => {
-  const secret = env.get('authentication.secret');
+function generateToken(userId: string, type: enums.TokenType) {
+  const secret = String(env.AUTH_SECRET);
   const expiresIn =
     type === enums.TokenType.ACCESS_TOKEN
-      ? env.get('authentication.accessToken.expiresIn')
-      : env.get('authentication.refreshToken.expiresIn');
+      ? String(env.JWT_EXPIRES_IN)
+      : String(env.REFRESH_JWT_EXPIRES_IN);
 
   const token = sign({ type }, secret, {
     expiresIn,
@@ -21,22 +21,20 @@ const generateToken = (userId: string, type: enums.TokenType) => {
   };
 };
 
-export default {
-  generateAccessToken: (userId: string) => {
-    return generateToken(userId, enums.TokenType.ACCESS_TOKEN);
-  },
+export function generateAccessToken(userId: string) {
+  return generateToken(userId, enums.TokenType.ACCESS_TOKEN);
+}
 
-  generateRefreshToken: (userId: string) => {
-    return generateToken(userId, enums.TokenType.REFRESH_TOKEN);
-  },
+export function generateRefreshToken(userId: string) {
+  return generateToken(userId, enums.TokenType.REFRESH_TOKEN);
+}
 
-  getTokenType: (token: string): enums.TokenType => {
-    return (verify(token, env.get('authentication.secret')) as JWTType).type;
-  },
+export function getTokenType(token: string): enums.TokenType {
+  return (verify(token, String(env.AUTH_SECRET)) as JWTType).type;
+}
 
-  parseTokenAndGetUserId: (token: string): string => {
-    const decryptedToken = crypto.decrypt(token);
-    const decoded = verify(decryptedToken, env.get('authentication.secret')) as JWTType;
-    return decoded.sub || '';
-  }
+export function parseTokenAndGetUserId(token: string): string {
+  const decryptedToken = crypto.decrypt(token);
+  const decoded = verify(decryptedToken, String(env.AUTH_SECRET)) as JWTType;
+  return decoded.sub || '';
 }

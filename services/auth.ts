@@ -2,10 +2,10 @@ import fs from 'fs';
 import { join } from 'path';
 import { VerifiedCallback } from 'passport-jwt';
 
-import { UserModel } from '../models';
-import { env, helper } from '../utils';
+import { env, helper } from 'utils';
+import { UserModelInstance } from 'models';
 
-class AuthService {
+export class AuthService {
 
   init() {
     const providersPath = join(__dirname, '..', 'providers');
@@ -25,7 +25,7 @@ class AuthService {
   };
 
   processUserFromSSO(req: any, profile: any, origin: string, done: VerifiedCallback) {
-    UserModel.findOneAndUpdate(
+    UserModelInstance.findOneAndUpdate(
       { origin, originId: profile.id },
       {
         email: profile.email,
@@ -49,7 +49,7 @@ class AuthService {
 
   async find(query: any) {
     try {
-      const response = await UserModel.findOne({ ...query, password: { $exists: true } }, { new: true });
+      const response = await UserModelInstance.findOne({ ...query, password: { $exists: true } }, { new: true });
       return { status: 200, data: response };
     } catch (error: any) {
       return { status: 500 }
@@ -57,4 +57,4 @@ class AuthService {
   }
 }
 
-export default new AuthService();
+export const AuthServiceInstance = new AuthService();

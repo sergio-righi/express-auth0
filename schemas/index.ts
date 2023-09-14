@@ -1,2 +1,2 @@
-export { default as TokenSchema } from './token'
-export { default as UserSchema } from './user'
+export { TokenSchema, TokenSchemaInstance } from './token'
+export { UserSchema, UserSchemaInstance } from './user'

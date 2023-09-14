@@ -1,3 +1,3 @@
-export { default as JWTProvider } from './jwt';
-export { default as GoogleProvider } from './google';
-export { default as GitHubProvider } from './github';
+export { JWTProvider, JWTProviderInstance } from './jwt';
+export { GoogleProvider, GoogleProviderInstance } from './google';
+export { GitHubProvider, GitHubProviderInstance } from './github';

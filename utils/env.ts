@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import convict from 'convict'
 
 dotenv.config()
+
 export default convict({
   env: {
     default: 'dev',
@@ -29,10 +30,6 @@ export default convict({
     env: 'MONGODB_URI',
   },
   url: {
-    frontend: {
-      default: 'http://localhost:3000/',
-      env: 'FRONTEND_URL',
-    },
     backend: {
       default: 'http://localhost:4000/',
       env: 'BACKEND_URL',
@@ -41,26 +38,6 @@ export default convict({
   cors: {
     default: '/*/',
     env: 'CORS_ORIGIN',
-  },
-  mail: {
-    gmail: {
-      account: {
-        default: '',
-        env: 'GMAIL_ACCOUNT',
-      },
-      clientID: {
-        default: '',
-        env: 'GMAIL_CLIENT_ID',
-      },
-      clientSecret: {
-        default: '',
-        env: 'GMAIL_SECRET',
-      },
-      refreshToken: {
-        default: '',
-        env: 'GMAIL_REFRESH_TOKEN',
-      },
-    },
   },
   authentication: {
     secret: {

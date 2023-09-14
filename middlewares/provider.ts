@@ -1,8 +1,9 @@
 import passport from 'passport';
-import { env } from '../utils';
 
-export default (providerName: string) => passport.authenticate(providerName, {
-  session: false,
-  userProperty: 'currentUser',
-  failureRedirect: env.get('url.frontend')
-})
+export function provider(providerName: string, callback: string) {
+  passport.authenticate(providerName, {
+    session: false,
+    userProperty: 'currentUser',
+    failureRedirect: callback
+  })
+}

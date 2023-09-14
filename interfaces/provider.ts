@@ -1,5 +1,5 @@
 
-export default interface ProviderType {
+export interface ProviderType {
   clientID: string;
   clientSecret: string;
   scope: string;

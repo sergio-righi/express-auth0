@@ -1,6 +1,6 @@
 import { enums } from '../utils'
 
-export default interface JWTType {
+export interface JWTType {
   exp: number;
   type: enums.TokenType;
   sub: string;

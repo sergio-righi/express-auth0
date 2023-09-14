@@ -1,9 +1,9 @@
-import { Request, Response } from 'express'
-import { env } from '../utils'
+import { env } from 'utils'
+import { Request, Response, NextFunction } from 'express'
 
-export default (req: any, res: Response, next: any) => {
+export function auth(req: Request, res: Response, next: NextFunction) {
   try {
-    const apikey = req.headers.apikey
+    const apikey = req.headers.authorization
 
     if (!apikey) {
       const error: any = new Error('No parameters to authenticate.')
@@ -11,7 +11,7 @@ export default (req: any, res: Response, next: any) => {
       throw error
     }
 
-    const secretKey = env.get('api')
+    const secretKey = String(env.API_KEY)
     if (apikey === secretKey) next()
     else {
       const error: any = new Error('Not authenticated.')

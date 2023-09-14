@@ -1,5 +1,5 @@
 
-export default interface TokenType {
+export interface TokenType {
   userId: string;
   number: string;
   code: string;

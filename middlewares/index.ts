@@ -1,3 +1,4 @@
-export { default as AuthMiddleware } from './auth'
-export { default as JWTMiddleware } from './jwt'
-export { default as ProviderMiddleware } from './provider'
+export { auth } from './auth'
+export { callback } from "./callback";
+export { jwt } from './jwt'
+export { provider } from './provider'

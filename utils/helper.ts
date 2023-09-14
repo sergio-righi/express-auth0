@@ -1,6 +1,9 @@
 import path from 'path'
 
-export default {
-  removeExtensionFromFile: (filename: string) => path.parse(filename).name,
-  fromBearerToken: (token: string) => token.replace('Bearer ', '').trim()
+export function removeExtensionFromFile(filename: string) {
+  return path.parse(filename).name;
+}
+
+export function fromBearerToken(token: string) {
+  return token.replace('Bearer ', '').trim();
 }

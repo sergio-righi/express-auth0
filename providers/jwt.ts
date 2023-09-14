@@ -2,10 +2,10 @@ import passport from 'passport';
 import { Request } from 'express';
 import { Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 
-import { UserModel } from '../models';
-import { crypto, enums, env, helper, jwt } from '../utils';
+import { UserModelInstance } from 'models';
+import { crypto, enums, env, helper, jwt } from 'utils';
 
-class JWTProvider {
+export class JWTProvider {
   constructor() {
     passport.use(
       new JwtStrategy(
@@ -30,11 +30,11 @@ class JWTProvider {
               return null;
             }
           },
-          secretOrKey: env.get('authentication.secret'),
+          secretOrKey: String(env.AUTH_SECRET),
           passReqToCallback: true,
         },
         async (req: any, payload: any, done: VerifiedCallback) => {
-          const response = await UserModel.findById(payload.sub).select('-password');
+          const response = await UserModelInstance.findById(payload.sub).select('-password');
           if (response) {
             req.currentUser = response;
             return done(null, response);
@@ -47,4 +47,4 @@ class JWTProvider {
   }
 }
 
-export default new JWTProvider();
+export const JWTProviderInstance = new JWTProvider();

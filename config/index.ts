@@ -1,1 +1,1 @@
-export { default as Db } from './db';
+export { Db, DbInstance } from './db';

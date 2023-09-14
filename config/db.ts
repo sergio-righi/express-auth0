@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 
-import { env } from '../utils'
+import { env } from 'utils'
 
-class Db {
-  #connectionString = env.get('mongoose');
+export class Db {
+  #connectionString = String(env.MONGODB_URI);
 
   async connect() {
     await mongoose.connect(this.#connectionString)
@@ -15,4 +15,4 @@ class Db {
   }
 }
 
-export default new Db();
+export const DbInstance = new Db();

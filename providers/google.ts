@@ -3,21 +3,21 @@ import { Request } from 'express';
 import { VerifiedCallback } from 'passport-jwt';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 
-import { AuthService } from '../services';
-import { ProviderType } from '../interfaces';
+import { ProviderType } from 'interfaces';
+import { AuthServiceInstance } from 'services';
 
-class GoogleProvider {
+export class GoogleProvider {
   #providerName = 'google';
   #passportConfig: ProviderType
 
   constructor() {
-    this.#passportConfig = AuthService.getConfigByProviderName(this.#providerName);
+    this.#passportConfig = AuthServiceInstance.getConfigByProviderName(this.#providerName);
     if (this.#passportConfig.clientID) {
       passport.use(
         new GoogleStrategy(
           { ...this.#passportConfig, passReqToCallback: true },
           (req: Request, accessToken: string, refreshToken: string, profile: any, verified: VerifiedCallback) => {
-            AuthService.processUserFromSSO(req, this.#processUserData(profile), this.#providerName, verified);
+            AuthServiceInstance.processUserFromSSO(req, this.#processUserData(profile), this.#providerName, verified);
           },
         ),
       );
@@ -34,4 +34,4 @@ class GoogleProvider {
   }
 }
 
-export default new GoogleProvider();
+export const GoogleProviderInstance = new GoogleProvider();

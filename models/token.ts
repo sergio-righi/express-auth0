@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
-import { TokenSchema } from '../schemas';
+import { TokenSchemaInstance } from 'schemas';
 
-class TokenModel {
+export class TokenModel {
   model: any
 
   constructor() {
-    this.model = mongoose.model('Token', TokenSchema)
+    this.model = mongoose.model('Token', TokenSchemaInstance)
   }
 }
 
-export default new TokenModel().model
+export const TokenModelInstance = new TokenModel().model

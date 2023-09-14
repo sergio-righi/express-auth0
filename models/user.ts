@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
-import { UserSchema } from '../schemas';
+import { UserSchemaInstance } from 'schemas';
 
-class UserModel {
+export class UserModel {
   model: any
 
   constructor() {
-    this.model = mongoose.model('User', UserSchema)
+    this.model = mongoose.model('User', UserSchemaInstance)
   }
 }
 
-export default new UserModel().model
+export const UserModelInstance = new UserModel().model

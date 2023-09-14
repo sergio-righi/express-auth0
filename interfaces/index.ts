@@ -1,4 +1,4 @@
-export { default as JWTType } from './jwt';
-export { default as ProviderType } from './provider';
-export { default as TokenType } from './token';
-export { default as UserType } from './user';
+export { JWTType } from './jwt';
+export { ProviderType } from './provider';
+export { TokenType } from './token';
+export { UserType } from './user';

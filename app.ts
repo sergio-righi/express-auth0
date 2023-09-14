@@ -2,9 +2,9 @@ import cors from 'cors';
 import express from 'express'
 import passport from 'passport'
 
-import { Db } from './config'
-import { env } from './utils'
-import { AuthRoute, MailRoute, TokenRoute } from './routes'
+import { env } from 'utils'
+import { DbInstance } from 'config'
+import { AuthRouterInstance, TokenRouterInstance } from './routes'
 
 class App {
   express: express.Express;
@@ -12,7 +12,7 @@ class App {
   constructor() {
     this.express = express();
 
-    Db.connect().then(() => {
+    DbInstance.connect().then(() => {
       this.#setConfiguration();
       this.#setRoute();
     });
@@ -20,7 +20,7 @@ class App {
 
   #setConfiguration() {
     this.express.use(cors({
-      origin: new RegExp(env.get('cors')),
+      origin: new RegExp(env.CORS_ORIGIN),
     }))
     this.express.use(express.json())
     this.express.use(passport.initialize())
@@ -28,10 +28,8 @@ class App {
   }
 
   #setRoute() {
-    // this.express.options('*', cors())
-    this.express.use('/auth', AuthRoute)
-    this.express.use('/mail', MailRoute)
-    this.express.use('/token', TokenRoute)
+    this.express.use('/auth', AuthRouterInstance)
+    this.express.use('/token', TokenRouterInstance)
   }
 }
 

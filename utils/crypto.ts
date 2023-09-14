@@ -1,40 +1,39 @@
 import CryptoJS from 'crypto-js'
-import { env } from '../utils'
 
-const secret = env.get('authentication.secret')
-const iv = env.get('authentication.iv')
+import { env } from 'utils'
 
-export default {
-  encrypt: (value: string) => {
-    const cipher = CryptoJS.AES.encrypt(
-      value,
-      CryptoJS.enc.Utf8.parse(secret),
-      {
-        iv: CryptoJS.enc.Utf8.parse(iv),
-        mode: CryptoJS.mode.CBC,
-      }
-    )
+const iv = String(env.AUTH_IV)
+const secret = String(env.AUTH_SECRET)
 
-    return cipher.toString(CryptoJS.format.Hex)
-  },
+export function encrypt(value: string) {
+  const cipher = CryptoJS.AES.encrypt(
+    value,
+    CryptoJS.enc.Utf8.parse(secret),
+    {
+      iv: CryptoJS.enc.Utf8.parse(iv),
+      mode: CryptoJS.mode.CBC,
+    }
+  )
 
-  decrypt: (value: string) => {
-    const tempWordArray = CryptoJS.enc.Hex.parse(value)
-    const tempBase64 = CryptoJS.enc.Base64.stringify(tempWordArray)
-    const cipher = CryptoJS.AES.decrypt(
-      tempBase64,
-      CryptoJS.enc.Utf8.parse(secret),
-      {
-        iv: CryptoJS.enc.Utf8.parse(iv),
-        mode: CryptoJS.mode.CBC,
-      }
-    )
+  return cipher.toString(CryptoJS.format.Hex)
+}
 
-    return CryptoJS.enc.Utf8.stringify(cipher).toString()
-  },
+export function decrypt(value: string) {
+  const tempWordArray = CryptoJS.enc.Hex.parse(value)
+  const tempBase64 = CryptoJS.enc.Base64.stringify(tempWordArray)
+  const cipher = CryptoJS.AES.decrypt(
+    tempBase64,
+    CryptoJS.enc.Utf8.parse(secret),
+    {
+      iv: CryptoJS.enc.Utf8.parse(iv),
+      mode: CryptoJS.mode.CBC,
+    }
+  )
 
-  hash: (value: string) => {
-    const hash = CryptoJS.SHA256(secret + value)
-    return hash.toString(CryptoJS.enc.Base64)
-  },
+  return CryptoJS.enc.Utf8.stringify(cipher).toString()
+}
+
+export function hash(value: string) {
+  const hash = CryptoJS.SHA256(secret + value)
+  return hash.toString(CryptoJS.enc.Base64)
 }

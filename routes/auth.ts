@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
-import { AuthController } from '../controllers'
-import { AuthMiddleware, JWTMiddleware, ProviderMiddleware } from '../middlewares'
-import { env } from '../utils';
+import { AuthControllerInstance } from 'controllers'
+import { auth, callback, jwt, provider } from 'middlewares'
+import { env } from 'utils';
 
-class AuthRoute {
+export class AuthRouter {
   router: express.Router;
 
   constructor() {
@@ -14,21 +14,21 @@ class AuthRoute {
   }
 
   #setRoute() {
-    this.router.get("/fetch", JWTMiddleware, (req, res) => AuthController.fetch(req, res));
-    this.router.get("/refresh-token", AuthMiddleware, (req, res) => AuthController.refreshToken(req, res));
-    this.router.post("/find", AuthMiddleware, (req, res) => AuthController.find(req, res));
-    this.router.post("/login", AuthMiddleware, (req, res) => AuthController.login(req, res));
-    this.router.post("/register", AuthMiddleware, (req, res) => AuthController.register(req, res));
+    this.router.get("/fetch", jwt, (req: Request, res: Response) => AuthControllerInstance.fetch(req, res));
+    this.router.get("/refresh-token", auth, (req: Request, res: Response) => AuthControllerInstance.refreshToken(req, res));
+    this.router.post("/find", auth, (req: Request, res: Response) => AuthControllerInstance.find(req, res));
+    this.router.post("/login", auth, (req: Request, res: Response) => AuthControllerInstance.login(req, res));
+    this.router.post("/register", auth, (req: Request, res: Response) => AuthControllerInstance.register(req, res));
   }
 
   #setProviderRoute() {
-    Object.keys(env.get('provider') || {}).forEach((providerName: string) => {
-      this.router.get(`/${providerName}`, ProviderMiddleware(providerName))
-      this.router.get(`/${providerName}/callback`, ProviderMiddleware(providerName), (req, res) =>
-        AuthController.generateUserTokenAndRedirect(req, res)
+    Object.keys(env.PROVIDER || {}).forEach((providerName: string) => {
+      this.router.get(`/${providerName}`, callback, (req: Request) => provider(providerName, req.callback))
+      this.router.get(`/${providerName}/callback`, callback, (req: Request) => provider(providerName, req.callback), (req: Request, res) =>
+        AuthControllerInstance.generateUserTokenAndRedirect(req, res)
       )
     })
   }
 }
 
-export default new AuthRoute().router;
+export const AuthRouterInstance = new AuthRouter();

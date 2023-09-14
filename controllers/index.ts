@@ -1,3 +1,2 @@
-export { default as AuthController } from './auth';
-export { default as MailController } from './mail';
-export { default as TokenController } from './token';
+export { AuthController, AuthControllerInstance } from './auth';
+export { TokenController, TokenControllerInstance } from './token';

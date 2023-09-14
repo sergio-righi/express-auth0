@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 
-import { crypto, env, helper, jwt } from '../utils'
-import { UserModel } from '../models'
-import { AuthService } from '../services'
+import { crypto, helper, jwt } from 'utils'
+import { UserModelInstance } from 'models'
+import { AuthServiceInstance } from 'services'
 
-class AuthController {
+export class AuthController {
   constructor() {
-    AuthService.init()
+    AuthServiceInstance.init()
   }
 
   async fetch(req: Request, res: Response) {
@@ -23,7 +23,7 @@ class AuthController {
     try {
       const { email, password } = req.body
       const hashedPassword = crypto.hash(password)
-      const response = await UserModel.findOne({
+      const response = await UserModelInstance.findOne({
         email,
         password: hashedPassword,
       })
@@ -41,13 +41,13 @@ class AuthController {
   async register(req: Request, res: Response) {
     try {
       const { email, password } = req.body
-      const response = await UserModel.findOne({
+      const response = await UserModelInstance.findOne({
         email,
         password: { $exists: true },
       })
       if (!response) {
         const hashedPassword = crypto.hash(password)
-        const user = await UserModel.create({
+        const user = await UserModelInstance.create({
           ...req.body,
           password: hashedPassword,
         })
@@ -72,25 +72,25 @@ class AuthController {
     }
   }
 
-  async generateTokensAndAuthenticateUser(res: any, userId: string) {
-    const user = await UserModel.findById(userId).select('-password')
+  async generateTokensAndAuthenticateUser(res: Response, userId: string) {
+    const user = await UserModelInstance.findById(userId).select('-password')
     const { token: accessToken, expiration: expirationDate } = jwt.generateAccessToken(userId)
     const { token: refreshToken } = jwt.generateRefreshToken(userId)
     res.status(200).json({ accessToken, expirationDate, refreshToken, user })
   }
 
-  async generateUserTokenAndRedirect(req: any, res: any) {
+  async generateUserTokenAndRedirect(req: Request, res: Response) {
     const { currentUser } = req;
     const { token: accessToken } = jwt.generateAccessToken(String(currentUser._id));
-    const fronendUrl = env.get('url.frontend')
+    const fronendUrl = req['callback'];
     const successRedirect = `${fronendUrl}authentication`
     res.redirect(`${successRedirect}?accessToken=${accessToken}`)
   }
 
   async find(req: Request, res: Response) {
-    const response = await AuthService.find(req.body)
+    const response = await AuthServiceInstance.find(req.body)
     res.status(response.status).json(response.data)
   }
 }
 
-export default new AuthController()
+export const AuthControllerInstance = new AuthController()

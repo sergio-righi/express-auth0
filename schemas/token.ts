@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose'
 
-class TokenSchema {
+export class TokenSchema {
   tokenSchema: Schema
 
   constructor() {
@@ -22,4 +22,4 @@ class TokenSchema {
   }
 }
 
-export default new TokenSchema().tokenSchema;
+export const TokenSchemaInstance = new TokenSchema().tokenSchema;

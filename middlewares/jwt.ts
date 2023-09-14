@@ -1,6 +1,8 @@
 import passport from 'passport';
 
-export default passport.authenticate('jwt', {
-  userProperty: 'currentUser',
-  session: false,
-});
+export function jwt() {
+  passport.authenticate('jwt', {
+    userProperty: 'currentUser',
+    session: false,
+  })
+};
