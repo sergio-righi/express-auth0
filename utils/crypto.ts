@@ -2,8 +2,8 @@ import CryptoJS from 'crypto-js'
 
 import { env } from 'utils'
 
-const iv = String(env.AUTH_IV)
-const secret = String(env.AUTH_SECRET)
+const iv = String(env.get('auth.iv'))
+const secret = String(env.get('auth.secret'))
 
 export function encrypt(value: string) {
   const cipher = CryptoJS.AES.encrypt(

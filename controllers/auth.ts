@@ -80,7 +80,7 @@ export class AuthController {
   }
 
   async generateUserTokenAndRedirect(req: Request, res: Response) {
-    const { currentUser } = req;
+    const { currentUser } = req as any;
     const { token: accessToken } = jwt.generateAccessToken(String(currentUser._id));
     const fronendUrl = req['callback'];
     const successRedirect = `${fronendUrl}authentication`

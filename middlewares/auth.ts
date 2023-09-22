@@ -11,7 +11,7 @@ export function auth(req: Request, res: Response, next: NextFunction) {
       throw error
     }
 
-    const secretKey = String(env.API_KEY)
+    const secretKey = String(env.get('api'));
     if (apikey === secretKey) next()
     else {
       const error: any = new Error('Not authenticated.')

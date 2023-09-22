@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
-import { TokenController } from '../controllers'
-import { AuthMiddleware } from '../middlewares'
+import { TokenControllerInstance } from 'controllers'
+import { auth } from 'middlewares'
 
 export class TokenRouter {
   router: express.Router;
@@ -12,13 +12,13 @@ export class TokenRouter {
   }
 
   #setRoute() {
-    this.router.post('/', AuthMiddleware, (req: Request, res: Response) => TokenController.create(req, res))
-    this.router.get('/', AuthMiddleware, (req: Request, res: Response) => TokenController.find(req, res))
-    this.router.patch('/grant/:id', AuthMiddleware, (req: Request, res: Response) => TokenController.grant(req, res))
-    this.router.patch('/revoke/:id', AuthMiddleware, (req: Request, res: Response) =>
-      TokenController.revoke(req, res)
+    this.router.post('/', auth, (req: Request, res: Response) => TokenControllerInstance.create(req, res))
+    this.router.get('/', auth, (req: Request, res: Response) => TokenControllerInstance.find(req, res))
+    this.router.patch('/grant/:id', auth, (req: Request, res: Response) => TokenControllerInstance.grant(req, res))
+    this.router.patch('/revoke/:id', auth, (req: Request, res: Response) =>
+      TokenControllerInstance.revoke(req, res)
     )
-    this.router.patch('/reset/:id', AuthMiddleware, (req: Request, res: Response) => TokenController.reset(req, res))
+    this.router.patch('/reset/:id', auth, (req: Request, res: Response) => TokenControllerInstance.reset(req, res))
   }
 }
 

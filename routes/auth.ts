@@ -22,9 +22,9 @@ export class AuthRouter {
   }
 
   #setProviderRoute() {
-    Object.keys(env.PROVIDER || {}).forEach((providerName: string) => {
-      this.router.get(`/${providerName}`, callback, (req: Request) => provider(providerName, req.callback))
-      this.router.get(`/${providerName}/callback`, callback, (req: Request) => provider(providerName, req.callback), (req: Request, res) =>
+    Object.keys(env.get('provider') || {}).forEach((providerName: string) => {
+      this.router.get(`/${providerName}`, callback, (req: Request | any) => provider(providerName, req.callback))
+      this.router.get(`/${providerName}/callback`, callback, (req: Request | any) => provider(providerName, req.callback), (req: Request, res) =>
         AuthControllerInstance.generateUserTokenAndRedirect(req, res)
       )
     })

@@ -4,11 +4,11 @@ import { JWTType } from 'interfaces';
 import { crypto, enums, env } from 'utils';
 
 function generateToken(userId: string, type: enums.TokenType) {
-  const secret = String(env.AUTH_SECRET);
+  const secret = String(env.get('auth.secret'));
   const expiresIn =
     type === enums.TokenType.ACCESS_TOKEN
-      ? String(env.JWT_EXPIRES_IN)
-      : String(env.REFRESH_JWT_EXPIRES_IN);
+      ? String(env.get('auth.accessToken.expiresIn'))
+      : String(env.get('auth.refreshToken.expiresIn'));
 
   const token = sign({ type }, secret, {
     expiresIn,
@@ -30,11 +30,11 @@ export function generateRefreshToken(userId: string) {
 }
 
 export function getTokenType(token: string): enums.TokenType {
-  return (verify(token, String(env.AUTH_SECRET)) as JWTType).type;
+  return (verify(token, String(env.get('auth.secret'))) as JWTType).type;
 }
 
 export function parseTokenAndGetUserId(token: string): string {
   const decryptedToken = crypto.decrypt(token);
-  const decoded = verify(decryptedToken, String(env.AUTH_SECRET)) as JWTType;
+  const decoded = verify(decryptedToken, String(env.get('auth.secret'))) as JWTType;
   return decoded.sub || '';
 }

@@ -2,8 +2,8 @@ import cors from 'cors';
 import express from 'express'
 import passport from 'passport'
 
-import { env } from 'utils'
-import { DbInstance } from 'config'
+import { env } from './utils'
+import { DbInstance } from './config'
 import { AuthRouterInstance, TokenRouterInstance } from './routes'
 
 class App {
@@ -20,7 +20,7 @@ class App {
 
   #setConfiguration() {
     this.express.use(cors({
-      origin: new RegExp(env.CORS_ORIGIN),
+      origin: new RegExp(env.get('cors')),
     }))
     this.express.use(express.json())
     this.express.use(passport.initialize())
@@ -28,7 +28,7 @@ class App {
   }
 
   #setRoute() {
-    this.express.use('/auth', AuthRouterInstance)
+    this.express.use('/auth', AuthRouterInstance as any)
     this.express.use('/token', TokenRouterInstance)
   }
 }

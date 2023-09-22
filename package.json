@@ -1,11 +1,11 @@
 {
-  "name": "server",
+  "name": "auth0-api",
   "version": "1.0.0",
-  "description": "auth0 example",
+  "description": "auth0 service api",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon index.ts",
-    "start": "set NODE_ENV=production && node --optimize_for_size --max-old-space-size=4096 -- node_modules/ts-node/dist/bin -P tsconfig.json index.ts"
+    "dev": "nodemon -r tsconfig-paths/register index.ts",
+    "start": "set NODE_ENV=production && node -- node_modules/ts-node/dist/bin -P tsconfig.json -r tsconfig-paths/register index.ts"
   },
   "author": "Sergio Righi",
   "license": "ISC",
@@ -29,6 +29,11 @@
     "typescript": "^4.9.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "@types/cors": "^2.8.14",
+    "@types/express": "^4.17.17",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^20.6.3",
+    "nodemon": "^2.0.20",
+    "tsconfig-paths": "^4.2.0"
   }
 }

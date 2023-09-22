@@ -30,7 +30,7 @@ export class JWTProvider {
               return null;
             }
           },
-          secretOrKey: String(env.AUTH_SECRET),
+          secretOrKey: String(env.get('auth.secret')),
           passReqToCallback: true,
         },
         async (req: any, payload: any, done: VerifiedCallback) => {

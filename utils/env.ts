@@ -39,7 +39,7 @@ export default convict({
     default: '/*/',
     env: 'CORS_ORIGIN',
   },
-  authentication: {
+  auth: {
     secret: {
       doc: 'The signing key for the AUTH',
       default: '',
