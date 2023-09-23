@@ -28,7 +28,7 @@ class App {
   }
 
   #setRoute() {
-    this.express.use('/auth', AuthRouterInstance as any)
+    this.express.use('/auth', AuthRouterInstance)
     this.express.use('/token', TokenRouterInstance)
   }
 }

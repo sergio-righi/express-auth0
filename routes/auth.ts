@@ -31,4 +31,4 @@ export class AuthRouter {
   }
 }
 
-export const AuthRouterInstance = new AuthRouter();
+export const AuthRouterInstance = new AuthRouter().router;
