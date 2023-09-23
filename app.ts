@@ -8,6 +8,10 @@ import { AuthRouterInstance, TokenRouterInstance } from './routes'
 
 class App {
   express: express.Express;
+  cors: any = {
+    origin: new RegExp(env.get('cors')),
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  };
 
   constructor() {
     this.express = express();
@@ -19,9 +23,7 @@ class App {
   }
 
   #setConfiguration() {
-    this.express.use(cors({
-      origin: new RegExp(env.get('cors')),
-    }))
+    this.express.use(cors(this.cors))
     this.express.use(express.json())
     this.express.use(passport.initialize())
     this.express.use(express.urlencoded({ extended: true }))
