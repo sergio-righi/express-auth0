@@ -23,6 +23,7 @@ class App {
   }
 
   #setConfiguration() {
+    console.log(this.cors.origin)
     this.express.use(cors(this.cors))
     this.express.use(express.json())
     this.express.use(passport.initialize())

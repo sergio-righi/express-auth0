@@ -40,7 +40,7 @@ export default convict({
     },
   },
   cors: {
-    default: '/*/',
+    default: '*',
     env: 'CORS_ORIGIN',
   },
   auth: {
