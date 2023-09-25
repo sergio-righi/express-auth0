@@ -34,6 +34,10 @@ export default convict({
       default: 'http://localhost:4000/',
       env: 'BACKEND_URL',
     },
+    frontend: {
+      default: 'http://localhost:3000/',
+      env: 'FRONTEND_URL',
+    },
   },
   cors: {
     default: '/*/',

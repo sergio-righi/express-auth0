@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import { crypto, helper, jwt } from 'utils'
+import { crypto, env, helper, jwt } from 'utils'
 import { UserModelInstance } from 'models'
 import { AuthServiceInstance } from 'services'
 
@@ -81,10 +81,9 @@ export class AuthController {
 
   async generateUserTokenAndRedirect(req: Request, res: Response) {
     const { currentUser } = req as any;
-    const { token: accessToken } = jwt.generateAccessToken(String(currentUser._id));
-    const fronendUrl = req['callback'];
-    const successRedirect = `${fronendUrl}authentication`
-    res.redirect(`${successRedirect}?accessToken=${accessToken}`)
+    const { token: accessToken } = jwt.generateAccessToken(String(currentUser.id));
+    const fronendUrl = env.get('url.frontend');
+    res.redirect(`${fronendUrl}?accessToken=${accessToken}`)
   }
 
   async find(req: Request, res: Response) {

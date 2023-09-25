@@ -25,22 +25,24 @@ export class AuthService {
   };
 
   processUserFromSSO(req: any, profile: any, origin: string, done: VerifiedCallback) {
-    UserModelInstance.findOneAndUpdate(
-      { origin, originId: profile.id },
-      {
-        email: profile.email,
-        name: profile.name,
-        origin,
-        verified: true,
-        originId: profile.id,
-      },
-      { upsert: true },
-      (err: any, user: any) => {
-        if (err) return done(err);
-        req.currentUser = user;
-        return done(null, user);
-      },
-    );
+    // UserModelInstance.findOneAndUpdate(
+    //   { origin, originId: profile.id },
+    //   {
+    //     email: profile.email,
+    //     name: profile.name,
+    //     origin,
+    //     verified: true,
+    //     originId: profile.id,
+    //   },
+    //   { upsert: true },
+    //   (err: any, user: any) => {
+    //     if (err) return done(err);
+    //     req.currentUser = user;
+    //     return done(null, user);
+    //   },
+    // );
+    req.currentUser = profile;
+    return done(null, profile);
   }
 
   _getAuthCallbackUrl(providerName: string) {

@@ -1,10 +1,18 @@
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
+import passport from 'passport';
+
 import { AuthControllerInstance } from 'controllers'
-import { auth, callback, jwt, provider } from 'middlewares'
+import { auth, jwt, provider } from 'middlewares'
 import { env } from 'utils';
 
 export class AuthRouter {
   router: express.Router;
+  passportConfig: any = {
+    session: false,
+    userProperty: 'currentUser',
+    failureRedirect: env.get('url.frontend')
+
+  }
 
   constructor() {
     this.router = express.Router()
@@ -23,10 +31,19 @@ export class AuthRouter {
 
   #setProviderRoute() {
     Object.keys(env.get('provider') || {}).forEach((providerName: string) => {
-      this.router.get(`/${providerName}`, callback, (req: Request | any) => provider(providerName, req.callback))
-      this.router.get(`/${providerName}/callback`, callback, (req: Request | any) => provider(providerName, req.callback), (req: Request, res) =>
-        AuthControllerInstance.generateUserTokenAndRedirect(req, res)
-      )
+      // this.router.get(`/${providerName}`, (req: Request, res: Response, next: NextFunction) => provider(req, res, next, providerName))
+      // this.router.get(`/${providerName}/callback`, (req: Request, res: Response, next: NextFunction) => provider(req, res, next, providerName), (req: Request, res: Response) =>
+      //   AuthControllerInstance.generateUserTokenAndRedirect(req, res)
+      // )
+
+      this.router.get(`/${providerName}`, passport.authenticate(providerName, this.passportConfig));
+
+      this.router.get(`/${providerName}/callback`,
+        passport.authenticate(providerName, this.passportConfig),
+        (req, res) => {
+          AuthControllerInstance.generateUserTokenAndRedirect(req, res)
+        });
+
     })
   }
 }
