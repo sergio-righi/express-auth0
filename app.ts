@@ -9,7 +9,7 @@ import { AuthRouterInstance, TokenRouterInstance } from './routes'
 class App {
   express: express.Express;
   cors: any = {
-    origin: new RegExp(env.get('cors')),
+    origin: String(env.get('cors')),
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   };
 
